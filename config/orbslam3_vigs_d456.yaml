@@ -1,0 +1,74 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# ORB-SLAM3 RGB-D — dataset VIGS-Fusion (doi:10.57745/CI0K9G)
+#
+# Caméra : Intel RealSense D456 (et NON D435i — cf. page du dataset).
+# Intrinsèques RGB ci-dessous = séquence Line-Rot
+# (data/vigs_fusion/Line-Rot/extracted/intrinsics_rgb.json).
+#
+# ATTENTION : chaque séquence a ses propres intrinsèques. Écarts constatés sur fx :
+#   Line-Rot          423.3337
+#   XYZ-Rot-obstacles 423.7951
+#   Rotation-Only     423.9105
+# Soit ~0.6 px — négligeable pour l'ATE, mais recopier la bonne valeur depuis
+# extracted/intrinsics_rgb.json de la séquence évaluée.
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+
+Camera1.fx: 423.333740234375
+Camera1.fy: 422.1675720214844
+Camera1.cx: 409.631591796875
+Camera1.cy: 245.00372314453125
+
+Camera1.k1: 0.0
+Camera1.k2: 0.0
+Camera1.p1: 0.0
+Camera1.p2: 0.0
+
+Camera.width: 848
+Camera.height: 480
+
+Camera.fps: 30
+Camera.RGB: 1
+
+#--------------------------------------------------------------------------------------------
+# Baseline. La D456 partage l'optique de la D455 : baseline stéréo ≈ 95 mm
+# (la D435i, elle, est à 50 mm — c'est la valeur 0.0745 de l'exemple ORB-SLAM3
+# livré en amont, qui ne s'applique PAS ici).
+#
+# Sert à mbf = Stereo.b * fx et au seuil close/far mThDepth = Stereo.b * Stereo.ThDepth.
+# Ici 0.095 * 40 = 3.80 m, à comparer à la profondeur médiane des scènes ~3.85 m :
+# la moitié des points passe en "close" et contraint donc l'échelle. Avec l'ancien
+# 0.0745 le seuil tombait à 2.98 m et reléguait la majorité des points en "far",
+# c.-à-d. sans contrainte de profondeur — ce qui atténuait mécaniquement l'effet
+# de la qualité de la carte de profondeur, donc l'effet d'ASAF.
+#
+# À confirmer sur les extrinsèques depth→color du rosbag si besoin de rigueur.
+#--------------------------------------------------------------------------------------------
+Stereo.ThDepth: 40.0
+Stereo.b: 0.095
+
+# depth_png (uint16 mm) → mètres = depth / DepthMapFactor
+RGBD.DepthMapFactor: 1000.0
+
+#--------------------------------------------------------------------------------------------
+ORBextractor.nFeatures: 1200
+ORBextractor.scaleFactor: 1.2
+ORBextractor.nLevels: 8
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500.0

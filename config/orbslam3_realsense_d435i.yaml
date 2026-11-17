@@ -1,0 +1,55 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters — RealSense D435i (intrinsics projet VIGS / Rotation-Only)
+# fx≈423.33 fy≈422.17 cx≈409.63 cy≈245.00 ; résolution 848×480
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+Camera.type: "PinHole"
+
+Camera1.fx: 423.333740234375
+Camera1.fy: 422.1675720214844
+Camera1.cx: 409.631591796875
+Camera1.cy: 245.00372314453125
+
+Camera1.k1: 0.0
+Camera1.k2: 0.0
+Camera1.p1: 0.0
+Camera1.p2: 0.0
+
+Camera.width: 848
+Camera.height: 480
+
+Camera.fps: 30
+Camera.RGB: 1
+
+# Baseline stéréo virtuelle du D435i (valeur officielle ORB-SLAM3 RealSense_D435i.yaml).
+# Sert à mbf = Stereo.b * fx, et au seuil close/far : mThDepth = Stereo.b * Stereo.ThDepth.
+# Ici 0.0745 * 40 = 2.98 m — au-delà, les points sont traités comme "far" (sans contrainte
+# de profondeur). Profondeur médiane de la séquence ≈ 3.85 m, donc une part notable des
+# points tombe en "far" : paramètre à surveiller si le tracking est instable.
+Stereo.ThDepth: 40.0
+Stereo.b: 0.0745
+
+# Depth map factor : depth_png (uint16 mm) → mètres = depth / DepthMapFactor
+RGBD.DepthMapFactor: 1000.0
+
+#--------------------------------------------------------------------------------------------
+ORBextractor.nFeatures: 1200
+ORBextractor.scaleFactor: 1.2
+ORBextractor.nLevels: 8
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500.0

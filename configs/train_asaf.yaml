@@ -1,0 +1,31 @@
+# @package _global_
+defaults:
+  - train_baseline
+
+experiment:
+  name: asaf_net_rgbd
+
+model:
+  name: asaf_net
+  use_sensor_depth: true
+  use_confidence_head: true
+  residual_refinement: true
+
+data:
+  train_csv: ${oc.env:DEPTH_FUSION_ROOT,${project_root:}/dataset_fusion}/train.csv
+  val_csv: ${oc.env:DEPTH_FUSION_ROOT,${project_root:}/dataset_fusion}/val.csv
+  use_sensor_depth: true
+  batch_size: 4
+  num_workers: 2
+
+train:
+  epochs: 20
+  lr: 1.0e-4
+  checkpoint_dir: checkpoints/experiments/${experiment.name}
+  log_csv: ${train.checkpoint_dir}/train_log.csv
+  resume: ""
+  use_wandb: false
+  use_tensorboard: true
+
+loss:
+  w_confidence: 0.1

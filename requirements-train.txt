@@ -1,0 +1,20 @@
+# Entraînement ASAF + précalcul DA3 (RunPod / GPU)
+-e .
+numpy>=1.24,<2
+opencv-python-headless>=4.8,<4.10
+pyyaml>=6.0
+rosbags>=0.9
+evo>=1.30
+addict>=2.4
+tqdm>=4.65
+scikit-learn>=1.3
+omegaconf>=2.3
+hydra-core>=1.3
+tensorboard>=2.14
+huggingface_hub>=0.20
+safetensors>=0.4
+einops>=0.7
+timm>=0.9
+addict>=2.4
+imageio>=2.31
+plyfile>=1.0

@@ -1,0 +1,46 @@
+# @package _global_
+defaults:
+  - train_baseline
+
+experiment:
+  name: asaf_net_vigs_multiseq
+  seed: 42
+
+model:
+  name: asaf_net
+  backbone: resnet34
+  pretrained: true
+  use_sensor_depth: true
+  use_confidence_head: true
+  residual_refinement: true
+
+data:
+  train_csv: ${oc.env:DEPTH_FUSION_ROOT,${project_root:}}/dataset_fusion/vigs/train.csv
+  val_csv: ${oc.env:DEPTH_FUSION_ROOT,${project_root:}}/dataset_fusion/vigs/val.csv
+  use_sensor_depth: true
+  batch_size: 8
+  num_workers: 4
+  image_size: [384, 384]
+
+train:
+  epochs: 50
+  lr: 1.0e-4
+  checkpoint_dir: checkpoints/experiments/${experiment.name}
+  log_csv: ${train.checkpoint_dir}/train_log.csv
+  resume: ""
+  use_wandb: false
+  use_tensorboard: true
+
+loss:
+  w_l1: 1.0
+  w_grad: 0.5
+  w_ssim: 0.2
+  w_smooth: 0.1
+  w_normal: 0.1
+  w_scale: 0.05
+  w_confidence: 0.1
+
+eval:
+  min_depth: 0.001
+  max_depth: 10000.0
+  align_median: false

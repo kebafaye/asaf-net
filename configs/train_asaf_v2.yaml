@@ -1,0 +1,65 @@
+# @package _global_
+# ASAF-Net V2 — entraînement corrigé et optimisé (VIGS-Fusion multi-séquences)
+#
+# Corrections vs V1 :
+#   - augmentations géométriques jointes (flip RGB + profondeurs)
+#   - resize NEAREST des profondeurs (préserve les trous)
+#   - supervision métrique en mètres, normalisation fixe depth_scale_m
+#   - gate à échelle cohérente + canal de validité + prior composite
+#   - NLL Laplace pour l'incertitude (remplace la cible heuristique)
+defaults:
+  - train_baseline
+
+experiment:
+  name: asaf_net_v2_vigs
+  seed: 42
+
+model:
+  name: asaf_net_v2
+  backbone: resnet34
+  pretrained: true
+  depth_scale_m: 10.0
+
+data:
+  train_csv: ${oc.env:DEPTH_FUSION_ROOT,${project_root:}}/dataset_fusion/vigs/train.csv
+  val_csv: ${oc.env:DEPTH_FUSION_ROOT,${project_root:}}/dataset_fusion/vigs/val.csv
+  use_sensor_depth: true
+  depth_unit: auto
+  # Curriculum de trous : fraction de pixels capteur valides masqués en ENTRÉE
+  # (gardés en GT) — croît de 0.12 à 0.30 sur curriculum_epochs. Force une vraie
+  # complétion métrique et généralise mieux aux vrais trous capteur.
+  synthetic_holes: 0.12
+  synthetic_holes_max: 0.30
+  curriculum_epochs: 40
+  batch_size: 8
+  num_workers: 4
+  # Résolution relevée (384 -> 448) : bords mieux préservés (boundary_acc).
+  image_size: [448, 448]
+
+train:
+  epochs: 80
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  warmup_epochs: 3        # montée en LR : début d'entraînement stable
+  use_ema: true           # EMA des poids : checkpoint final plus stable (SLAM)
+  ema_decay: 0.999
+  checkpoint_dir: checkpoints/experiments/${experiment.name}
+  log_csv: ${train.checkpoint_dir}/train_log.csv
+  resume: ""
+  use_wandb: false
+  use_tensorboard: true
+
+loss:
+  w_l1: 1.0
+  w_grad: 0.75            # ↑ cohérence des gradients (bords)
+  w_ssim: 0.25
+  w_smooth_holes: 0.15    # ↑ lissage guidé-RGB dans les trous (complétion)
+  w_normal: 0.1           # ↑ cohérence des normales (surfaces/bords)
+  w_scale: 0.05
+  w_nll: 0.2              # incertitude Laplace (pondération SLAM)
+  max_depth_m: 20.0
+
+eval:
+  min_depth: 0.001
+  max_depth: 20.0
+  align_median: false

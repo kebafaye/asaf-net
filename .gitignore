@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv*/
+.pytest_cache/
+
+# Secrets et configuration locale
+*.env
+.mcp.json
+
+# Données, poids et sorties (téléchargés ou régénérés localement)
+data/
+dataset_fusion/
+checkpoints/**/*.pth
+checkpoints/**/*.pt
+outputs/
+evaluation_results/
+external/
+memoire_upgrade_da3/
+*.log
