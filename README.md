@@ -49,9 +49,11 @@ Les chemins sont relatifs à la racine du dépôt. Pour placer les données aill
 ### Poids du modèle
 
 Les poids entraînés (`asaf_net_v2_vigs.pth`, 120 Mo, époque 65 sur 80) ne sont pas versionnés.
-Téléchargez-les depuis **<LIEN_ZENODO_OU_HUGGING_FACE>** dans `checkpoints/`, puis vérifiez-les :
+Ils sont publiés dans la [release v1.0](https://github.com/kebafaye/asaf-net/releases/tag/v1.0) :
 
 ```bash
+curl -L -o checkpoints/asaf_net_v2_vigs.pth \
+  https://github.com/kebafaye/asaf-net/releases/download/v1.0/asaf_net_v2_vigs.pth
 cd checkpoints && sha256sum -c asaf_net_v2_vigs.pth.sha256 && cd ..
 ```
 
