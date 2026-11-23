@@ -10,6 +10,12 @@ en la fusionnant avec la prédiction du modèle monoculaire Depth Anything 3
 départ composite (capteur là où il mesure, monoculaire aligné ailleurs) et produit une
 carte de confiance.
 
+![Architecture d'ASAF-Net, illustrée sur une trame réelle de la séquence de test Line-Rot](docs/images/architecture_asaf_net.png)
+
+*Architecture d'ASAF-Net sur une trame réelle (trame 1160 de Line-Rot, séquence de test, modèle
+final). Une correction résiduelle, pondérée par une porte sensible à l'échelle, est ajoutée à une
+estimation de départ composite ; une seconde tête produit la carte de confiance.*
+
 ## Résultats principaux
 
 | Mesure | Résultat |
@@ -110,6 +116,12 @@ La campagne compare deux bras sur la séquence de test Line-Rot, rejouée à 0,1
 alimenté par la profondeur du capteur, puis par la sortie d'`asaf_node`. Deux exécutions par
 bras.
 
+![Chaîne d'évaluation de la localisation avec VIGS-Fusion et résultat sur Line-Rot](docs/images/chaine_evaluation_vigs.png)
+
+*Chaîne d'évaluation A/B : seule la source de profondeur change entre les deux bras. En bas, les
+trajectoires estimées, alignées sur la vérité terrain (Umeyama, échelle fixée à 1), et l'erreur
+absolue de trajectoire de chaque exécution.*
+
 Prérequis : GPU NVIDIA (campagne du mémoire conduite sur RTX 4090 ; `CUDA_ARCH` est à
 adapter à la carte, 8.6 pour une RTX 3090, 8.0 pour une A100), Ubuntu 22.04, ROS 2 Humble,
 CUDA 12.x. Les scripts ont été écrits pour une instance RunPod mais n'en dépendent pas.
@@ -139,6 +151,7 @@ slam/                  export de profondeur pour ORB-SLAM3
 config/                réglages ORB-SLAM3 de la caméra du corpus
 launch/                fichier de lancement ROS 2
 tests/                 tests sur processeur (pytest)
+docs/images/           figures du README
 ```
 
 ## Limites connues
@@ -152,10 +165,24 @@ tests/                 tests sur processeur (pytest)
 ## Citation
 
 ```
-K. Faye, « Amélioration de la profondeur d'une caméra RGB-D à l'aide d'un modèle
-d'estimation de profondeur basé sur l'apprentissage profond », mémoire de Master 2
+K. Faye et A. Ndoye, « Amélioration de la profondeur d'une caméra RGB-D à l'aide d'un
+modèle d'estimation de profondeur basé sur l'apprentissage profond », mémoire de Master 2
 Robotique, Université Numérique Cheikh Hamidou Kane, 2026.
 ```
+
+```bibtex
+@mastersthesis{faye2026asafnet,
+  author = {Faye, Kéba and Ndoye, Abdoullah},
+  title  = {Amélioration de la profondeur d'une caméra {RGB-D} à l'aide d'un modèle
+            d'estimation de profondeur basé sur l'apprentissage profond},
+  school = {Université Numérique Cheikh Hamidou Kane},
+  type   = {Mémoire de Master 2 Robotique},
+  year   = {2026},
+  url    = {https://github.com/kebafaye/asaf-net}
+}
+```
+
+Travail réalisé par Kéba Faye sous la direction du Dr Abdoullah Ndoye.
 
 Le corpus VIGS-Fusion et le système VIGS-Fusion sont dus à Ndoye et al. ; citez leurs
 travaux si vous utilisez le corpus.
