@@ -128,7 +128,7 @@ CUDA 12.x. Les scripts ont été écrits pour une instance RunPod mais n'en dép
 
 ```bash
 # Sur la machine GPU, depuis la racine du dépôt
-CUDA_ARCH=8.9 BUILD_ROOT=/build bash scripts/pod_build_vigs.sh   # VIGS-Fusion 046c6e4 + 4 correctifs
+CUDA_ARCH=8.9 BUILD_ROOT=/build bash scripts/pod_build_vigs.sh   
 bash scripts/pod_run_campaign.sh                                  # nœud ROS, séquence, DA3, A/B
 python scripts/summarize_vigs_campaign.py --seq Line-Rot
 ```
