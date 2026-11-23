@@ -130,22 +130,6 @@ class ASAFNet(nn.Module):
         return out
 
 
-# ---------------------------------------------------------------------------
-# ASAF-Net V2 — révision corrigée et optimisée
-# ---------------------------------------------------------------------------
-#
-# Corrections par rapport à la V1 :
-#   * Normalisation métrique FIXE (depth_scale_m) au lieu du max par image :
-#     comportement déterministe, identique entraînement/inférence ROS2.
-#   * Le gate reçoit mono et capteur dans le MÊME espace normalisé
-#     (la V1 mélangeait mono normalisé et capteur brut).
-#   * Canal de validité capteur en entrée : le réseau sait où sont les trous.
-#   * Prior composite : base = valid*capteur + (1-valid)*mono aligné —
-#     les trous sont pré-remplis par le mono, le résiduel reste petit partout.
-#   * Un seul refiner 6 canaux (≈30M params au lieu de 60M) ; le repli
-#     mono-seul s'obtient avec valid=0.
-#   * Tête d'incertitude aléatoirique : échelle de Laplace b(x) supervisée
-#     par NLL (Kendall & Gal, 2017) ; confiance = exp(-b).
 
 
 @dataclass
