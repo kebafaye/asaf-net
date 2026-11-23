@@ -160,7 +160,6 @@ docs/images/           figures du README
   fidélité au capteur, et la complétion est évaluée sur des trous synthétiques.
 - Le gain en localisation est établi sur une séquence et deux exécutions par
   configuration ; il dépend de la cadence de rejeu, à garder identique entre les bras.
-- La confiance produite n'est pas calibrée.
 
 ## Citation
 
